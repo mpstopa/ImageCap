@@ -51,13 +51,16 @@ def vgg_model2(attn):
     """
     vgg_instance = VGG16(include_top=False, weights='imagenet',pooling='avg')
     print('vgg_instance.summary()',vgg_instance.summary())
+# the decoder input and hence the encoder output depends on whether the
+# model uses attention or not. For no, use last layer (FC). For yes
+# use intermediate layer.
     if attn:
         transfer_layer = vgg_instance.get_layer('block5_conv3')
     else:
         transfer_layer = vgg_instance.get_layer('fc2')
     vgg_transfer_model = Model(inputs=vgg_instance.input, outputs=transfer_layer.output)
     input_layer = vgg_instance.get_layer('input_2')
-    print("input_layer.input_shape",input_layer.input_shape)
+#    print("input_layer.input_shape",input_layer.input_shape)
     image_size = input_layer.input_shape[1:3]
     return vgg_transfer_model, image_size
 
@@ -71,13 +74,18 @@ def use_pretrained_model_for_images(filenames_with_all_captions, attn, printswit
     :param batch_size: size of the batch for CNN
     :return: np array with generated features
     """
+
+# note the keys are the jpg filenames, the values are the captions.
+# in the encoding phase the captions/values are not used.
     print("use_pretrained_model_for_image - filenames_with_all_captions", \
-          list(filenames_with_all_captions.keys())[0])
+          list(filenames_with_all_captions.keys())[0],"\n", \
+         list(filenames_with_all_captions.values())[0])
+
     transfer_model, img_size = vgg_model(attn)
-    print("transfer model",transfer_model,"img_size",img_size)
+#    print("transfer model",transfer_model,"img_size",img_size)
     # get the number of images in the dataset
     num_images = len(filenames_with_all_captions)
-    print("num_images",num_images)
+#    print("num_images",num_images)
     # calculate the number of iterations
     iter_num = int(num_images / batch_size)
     # variable to print the progress each 5% of the dataset

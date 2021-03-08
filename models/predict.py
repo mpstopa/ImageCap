@@ -29,6 +29,11 @@ def generate_caption(image, model_image_size, decoder_model, transfer_model, voc
     :return: predicted captions + attention weights if get_weights param is true
     """
 
+    # need to initialize this in case of call with transfer_values = true
+    output_transfer_values = np.zeros((1,512))
+#    print("output_transfer_values.shape",output_transfer_values.shape)
+
+    
     if transfer_values: # in this case the image is not an image it is an encoded vector
         if attn:
             input_transfer_values = image.reshape((1, 196, 512))
@@ -38,7 +43,7 @@ def generate_caption(image, model_image_size, decoder_model, transfer_model, voc
         img = image_preprocessing.image_preprocessing(image, model_image_size)
         image_batch = np.expand_dims(img, axis=0)
         input_transfer_values = transfer_model.predict(image_batch) # NB
-        print("input_transfer_values.shape",input_transfer_values.shape)
+#        print("input_transfer_values.shape",input_transfer_values.shape)
         
         axis_tuple=(1,2)
         output_transfer_values = np.average(input_transfer_values,axis_tuple)
@@ -102,7 +107,7 @@ def generate_caption(image, model_image_size, decoder_model, transfer_model, voc
         weights = attn_weight_model.predict(input_data)
     res_captions = []
     probs = []
-    print("captions",captions)
+#    print("captions",captions)
     for caption in captions[:beam_size]:
         res_captions.append([vocabulary.get_word_by_id(x) for x in caption[0][1:-1]])
         probs.append(caption[1])
@@ -123,9 +128,9 @@ def generate_test_captions(test_images, *args):
     captions = []
     
     for i, image in tqdm(enumerate(test_images)):
-        print("i",i,"image",image)
-        plt.imshow(image)
-        plt.show()
+#        print("i",i,"image",image)
+#        plt.imshow(image)
+#        plt.show()
         captions.append(generate_caption(image, *args)[0][0])
 
     return captions
