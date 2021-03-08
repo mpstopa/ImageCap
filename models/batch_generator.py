@@ -42,9 +42,9 @@ def generate_batch(transfer_values, captions_tokens, number_of_words, gru=True, 
     :return: pair of input and output batches
     """
     
-    print('transfer_values1.shape',transfer_values.shape)
-    print('len(captions_tokens)',len(captions_tokens))
-    print('len(captions_tokens[0])',len(captions_tokens[0]))
+#    print('transfer_values1.shape',transfer_values.shape)
+#    print('len(captions_tokens)',len(captions_tokens))
+#    print('len(captions_tokens[0])',len(captions_tokens[0]))
 #    hold=input('wait here')
     
     while True:
