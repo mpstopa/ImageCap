@@ -1,4 +1,7 @@
 # ImageCap
+# version update 03/31/21 README_v2.md on local machine
+# adding remarks from Randy Christ.
+
 This repository contains code for a deep learning model that takes an image as an input and
 generates a caption. The models used here were adapted from a the repository of https://github.com/bulatkh.
 
@@ -141,3 +144,28 @@ seems that both c and s (the two LSTM memories) are set to that feature vector.
 LSTM is iterated 30 times which is the maximum length of a
 caption. (max_len in call to Decoder). The model summary (which can also be printed
 out in train_model) is, when attention and lstm are on, very long and complicated. 
+
+# Colleague Randy Christ did a download and build successfully and
+# sends the following notes.
+
+I found some things that might be useful for someone trying out your image captioning code:
+
+1) Download the entire Flickr8k dataset and unpack to the datasets\Flickr8k\Images directory
+
+If this is not done, the notebook files won't run since some files for training or testing are missing.
+2) May have to adjust the tensorboard, tensorflow and tensorflow-estimation versions in requirements.txt to avoid conflicts during installation.
+
+I had to adjust tensorboard 1.13.1 to 1.15.0, and tensorflow-estimation from 1.13.0 to 1.15.1
+
+This seems to be machine dependent, your mileage may vary.
+3) Setup anaconda environment, I found Python 3.6.10 to work best (This is optional, I found it easier to adjust the environment to suit the image captioning software without affecting other Python environments on the system).
+conda create -n imagecap python=3.6.10
+
+conda activate imagecap
+
+4) Install yacs for configuration: (I tried downloading the source files from Github, but that didn't work)
+pip install yacs
+5) Install jupyter:
+pip install jupyter
+
+Otherwise, another jupyter installed in the system path will be used (if available) and either the notebook won't run or some Python libraries will be missing when running the .ipynb files.
